@@ -37,21 +37,24 @@ var MealQuery = React.createClass({
       success: function(model, res){
         
         console.log("Response from the server: ", res);
+        var numMeals = that.state.get("numMeals");
+
+        var recipeQueue = res.matches;
 
         //Create a Recipes Collection with Recipe Models for each Recipe returned from the server.
         var recipesCollection = new RecipesCollection();
-        _.each(res.matches, function(recipe){
-          recipesCollection.add(new RecipeModel(recipe));
-        });
-        
+
+        for (var i = 0; i < numMeals; i++) {
+          recipesCollection.add(new RecipeModel(recipeQueue.shift()));  
+        }
+
         //Sets the Recipes Collection as a property on the AppView State, and updates the UI to reflect the recipes queried by the user.
-        that.props.onSubmit(recipesCollection, that.state);
+        that.props.onSubmit(recipesCollection, that.state, recipeQueue);
       },
       error: function(model, err){
         console.error("There was an error with your request! ", err);
       }
     });
-    
   },
 
   render: function() {
