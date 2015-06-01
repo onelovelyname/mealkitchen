@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 var MealQuery = React.createClass({
-  
+
   mixins: [Backbone.Events],
 
   getInitialState: function() {
@@ -31,21 +31,21 @@ var MealQuery = React.createClass({
   handleSubmit: function(e){
     e.preventDefault();
     var that = this;
-    
+
     //Send a POST request to the server with the QueryModel to get a list of recipes that match the query.
     this.state.save({}, {
       success: function(model, res){
-        
+
         console.log("Response from the server: ", res);
         var numMeals = that.state.get("numMeals");
 
-        var recipeQueue = res.matches;
+        var recipeQueue = res;
 
         //Create a Recipes Collection with Recipe Models for each Recipe returned from the server.
         var recipesCollection = new RecipesCollection();
 
         for (var i = 0; i < numMeals; i++) {
-          recipesCollection.add(new RecipeModel(recipeQueue.shift()));  
+          recipesCollection.add(new RecipeModel(recipeQueue.shift()));
         }
 
         //Sets the Recipes Collection as a property on the AppView State, and updates the UI to reflect the recipes queried by the user.
