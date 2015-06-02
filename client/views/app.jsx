@@ -75,9 +75,9 @@ var MealPlansWrapper = React.createClass({
 
 //The AppView is the main container from which the rest of the App is rendered.
 var AppView = React.createClass({
-
+  
   mixins: [Navigation, Backbone.Events],
-
+  
   getInitialState: function(){
     return {};
   },
@@ -102,7 +102,6 @@ var AppView = React.createClass({
             <li><Link to="mealplans">Meal Plans</Link></li>
           </ul>
         </header>
-
         <RouteHandler />
       </div>
     );

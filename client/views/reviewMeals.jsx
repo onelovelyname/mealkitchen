@@ -24,8 +24,10 @@ var ReviewMeals = React.createClass({
     // save id of recipe, and remove recipe from the RecipeCollection
     var modelId = event.target.dataset.id;
     var recipe = this.props.recipes.remove(this.props.recipes.at(modelId));
+
     var recipeId = recipe.get('id');
 
+    console.log('recipeQueue: ', this.props.recipeQueue);
     // update queryModel for rejectedRecipeId and totalRecipesRequested to ensure unique recipes from Yummly query
     var totalRecipesRequested = this.props.query.get('totalRecipesRequested');
     this.props.query.set({ "rejectedRecipeId": recipeId, 
@@ -33,15 +35,33 @@ var ReviewMeals = React.createClass({
     
     // add new recipe to RecipeCollection
     var that = this;
-    this.props.query.save({}, {
+    //console.log('recipeId: ', this.props.recipes.where({id: recipeId}));
+
+    new RecipePreference({
+      recipeId: recipeId,
+      userId: 0,
+      preference: 0
+    }).save({}, {
       success: function(model, res) {
         console.log("Response from server:", res);
         that.props.recipes.add(new RecipeModel(res.matches[0]), {at: modelId});
+
       },
       error: function(model, err) {
         console.error("There was an error with your request! ", err);
       }
     });
+
+
+    // this.props.query.save({}, {
+    //   success: function(model, res) {
+    //     //console.log("Response from server:", res);
+      
+    //   },
+    //   error: function(model, err) {
+    //     console.error("There was an error with your request! ", err);
+    //   }
+    // });
   
   },
 
